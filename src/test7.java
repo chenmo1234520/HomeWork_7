@@ -11,13 +11,48 @@ interface Sposition {
   void rise();
 }
 
-interface Position extends Mposition, Sposition {
+interface Ssposition {
+  double Ssposition = 2;
+
+  void rise();
+}
+
+interface Position extends Mposition, Sposition, Ssposition {
 
   void rise();
 }
 
 class Staff implements Position {
   String name;
+  String address;
+  int id;
+  int years;
+  float salary;
+  double position;
+  String type;
+
+  class specialStaff extends Staff {
+    public void rise() {
+      this.setPosition(Position.Ssposition);
+      this.setSalary(this.getSalary() * this.getPosition());
+      System.out.println(this.gettype() + " wage is:" + this.getSalary());
+    }
+
+    public specialStaff() {
+
+    }
+
+    public specialStaff(String name, String address, int id, int years, int salary) {
+      super(name, address, id, years, salary);
+    }
+
+    void show() {
+      this.settype("BossSon");
+      System.out.println(
+          "我叫" + this.name + "我来自" + this.address + "我来公司" + this.years + "年了" + "我的工号是" + this.id);
+      System.out.println("我的职位是" + this.type);
+    }
+  }
 
   public String getName() {
     return name;
@@ -27,10 +62,13 @@ class Staff implements Position {
     this.name = name;
   }
 
-  String address;
-  int id;
-  int years;
-  float salary;
+  public String gettype() {
+    return type;
+  }
+
+  public void settype(String type) {
+    this.type = type;
+  }
 
   public float getSalary() {
     return salary;
@@ -39,8 +77,6 @@ class Staff implements Position {
   public void setSalary(double salary) {
     this.salary = (float) salary;
   }
-
-  double position;
 
   public double getPosition() {
     return position;
@@ -53,18 +89,17 @@ class Staff implements Position {
   public void rise() {
     if (this instanceof Manger) {
       this.setPosition(Position.mposition);
-      this.setName("manger");
-      this.setSalary(10000);
+      this.settype("manger");
+
       // System.out.println(this.getName() + "最初工资为" + this.getSalary());
     } else {
       this.setPosition(Position.sposition);
-      this.setName("normal");
-      this.setSalary(1000);
+      this.settype("normal");
       // System.out.println(this.getName() + "最初工资为" + this.getSalary());
     }
 
     this.setSalary(this.getSalary() * this.getPosition());
-    System.out.println(this.getName() + " wage is:" + this.getSalary());
+    System.out.println(this.gettype() + " wage is:" + this.getSalary());
   }
 
   public Staff() {
@@ -80,6 +115,14 @@ class Staff implements Position {
 
   }
 
+  void show() {
+    this.settype("normal");
+    System.out.println(
+        "我叫" + this.name + "我来自" + this.address + "我来公司" + this.years + "年了" + "我的工号是" + this.id);
+    System.out.println("我的职位是" + this.type);
+
+  }
+
 }
 
 class Manger extends Staff {
@@ -92,16 +135,26 @@ class Manger extends Staff {
     super(name, address, id, years, salary);
   }
 
+  void show() {
+    this.settype("manger");
+    System.out.println(
+        "我叫" + this.name + "我来自" + this.address + "我来公司" + this.years + "年了" + "我的工号是" + this.id);
+    System.out.println("我的职位是" + this.type);
+  }
 }
 
 public class test7 {
 
   public static void main(String[] args) {
-    Staff s = new Staff();
-    Staff m = new Manger();
-
+    Staff s = new Staff("张三", "北京", 001, 2, 1000);
+    Staff m = new Manger("李四", "上海", 002, 10, 10000);
+    Staff.specialStaff ss = s.new specialStaff("王五", "北京", 000, 1, 20000);
+    s.show();
     s.rise();
+    m.show();
     m.rise();
+    ss.show();
+    ss.rise();
 
   }
 }
